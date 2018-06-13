@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+    }
+}
+
+repositories {
+    jcenter()
+    google()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    buildToolsVersion '27.0.3'
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 27
+        ndk {
+            abiFilters = [
+                    'armeabi-v7a',
+                    'x86',
+            ]
+        }
+        externalNativeBuild {
+            ndkBuild {
+                arguments '-j' + Runtime.runtime.availableProcessors()
+            }
+        }
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
+}
+
+dependencies {
+    implementation ':opencv:3.4.1@aar'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'junit:junit:4.12'
+}
