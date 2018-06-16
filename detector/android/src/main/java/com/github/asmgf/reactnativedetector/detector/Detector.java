@@ -9,7 +9,7 @@ public class Detector {
         System.loadLibrary("detector");
     }
 
-    boolean detect(Mat rgbaMat) {
+    public boolean detect(Mat rgbaMat) {
         return detect(rgbaMat.getNativeObjAddr());
     }
 

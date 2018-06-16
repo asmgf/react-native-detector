@@ -8,11 +8,15 @@ buildscript {
     }
 }
 
-repositories {
-    jcenter()
-    google()
-    flatDir {
-        dirs 'libs'
+final libsDir = file('libs')
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+        flatDir {
+            dirs libsDir
+        }
     }
 }
 
@@ -45,7 +49,7 @@ android {
 }
 
 dependencies {
-    implementation ':opencv:3.4.1@aar'
+    api ':opencv:3.4.1@aar'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'junit:junit:4.12'
 }
