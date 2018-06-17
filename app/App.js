@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   Platform,
+  PermissionsAndroid,
   StyleSheet,
   Text,
   View
@@ -19,9 +20,32 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+async function requestPermissions() {
+  if (Platform.OS === 'android') {
+    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    return Platform.Version >= 23 ? granted === PermissionsAndroid.RESULTS.GRANTED : granted;
+  }
+  return true;
+}
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {hasPermissions: null};
+  }
+
+  async componentWillMount() {
+    this.setState({hasPermissions: await requestPermissions()});
+  }
+
   render() {
+    if (this.state.hasPermissions === false) {
+        return (
+        <View style={styles.container}>
+          <Text style={styles.noPermissions}>Camera access is not allowed</Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -44,6 +68,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  noPermissions: {
+    color: 'red',
+    fontSize: 20,
+    textAlign: 'center',
   },
   welcome: {
     fontSize: 20,
