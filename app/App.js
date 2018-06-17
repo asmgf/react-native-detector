@@ -35,7 +35,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <DetectorView style={styles.detector} />
+        <DetectorView style={styles.detector} enabled={this.state.hasPermissions} />
         {this.state.hasPermissions === false &&
           <Text style={styles.noPermissions}>Camera access is not allowed</Text>}
         {this.state.detected && <View style={styles.cue} />}
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
   },
   noPermissions: {
     color: 'red',

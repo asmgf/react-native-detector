@@ -13,6 +13,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DetectorView extends JavaCameraView {
     private final Processor processor = new Processor();
 
+    public DetectorView(Context context, int cameraId) {
+        super(context, cameraId);
+        setCvCameraViewListener(processor);
+    }
+
     public DetectorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCvCameraViewListener(processor);

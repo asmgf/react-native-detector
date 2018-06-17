@@ -1,3 +1,6 @@
 rootProject.name = 'ReactNativeDetector'
 
 include ':app'
+
+include ':detector'
+project(':detector').projectDir = file('../../detector/android')
