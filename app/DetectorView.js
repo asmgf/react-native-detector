@@ -8,15 +8,21 @@ const ReactNativeDetectorView = requireNativeComponent(
         name: 'DetectorView',
         propTypes: {
             enabled: PropTypes.bool,
+            onResult: PropTypes.func,
             ...ViewPropTypes,
         },
     },
 );
 
 export default class DetectorView extends Component {
+    onNativeResult = (event) => {
+        const listener = this.props.onResult;
+        listener && listener(event.nativeEvent.detected);
+    }
+
     render() {
         return (
-            <ReactNativeDetectorView {...this.props} />
+            <ReactNativeDetectorView {...this.props} onNativeResult={this.onNativeResult} />
         );
     }
 }

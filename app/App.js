@@ -28,6 +28,10 @@ export default class App extends Component {
     this.state = {hasPermissions: null, detected: false};
   }
 
+  setDetected = (detected) => {
+    this.setState({detected: detected});
+  }
+
   async componentWillMount() {
     this.setState({hasPermissions: await requestPermissions()});
   }
@@ -35,7 +39,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <DetectorView style={styles.detector} enabled={this.state.hasPermissions} />
+        <DetectorView style={styles.detector} enabled={this.state.hasPermissions} onResult={this.setDetected} />
         {this.state.hasPermissions === false &&
           <Text style={styles.noPermissions}>Camera access is not allowed</Text>}
         {this.state.detected && <View style={styles.cue} />}
