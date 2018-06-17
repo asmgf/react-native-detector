@@ -12,13 +12,7 @@ import {
   Text,
   View
 } from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import DetectorView from './DetectorView';
 
 async function requestPermissions() {
   if (Platform.OS === 'android') {
@@ -31,7 +25,7 @@ async function requestPermissions() {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {hasPermissions: null};
+    this.state = {hasPermissions: null, detected: false};
   }
 
   async componentWillMount() {
@@ -39,49 +33,42 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.hasPermissions === false) {
-        return (
-        <View style={styles.container}>
-          <Text style={styles.noPermissions}>Camera access is not allowed</Text>
-        </View>
-      );
-    }
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <DetectorView style={styles.detector} />
+        {this.state.hasPermissions === false &&
+          <Text style={styles.noPermissions}>Camera access is not allowed</Text>}
+        {this.state.detected && <View style={styles.cue} />}
       </View>
     );
   }
 }
+
+const overlayStyles = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'transparent',
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'black',
   },
   noPermissions: {
     color: 'red',
     fontSize: 20,
     textAlign: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  detector: {
+    ...overlayStyles,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  cue: {
+    borderColor: 'red',
+    borderWidth: 5,
+    ...overlayStyles,
   },
 });
