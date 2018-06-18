@@ -32,7 +32,7 @@ export default class App extends Component {
     this.setState({detected: detected});
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     this.setState({hasPermissions: await requestPermissions()});
   }
 
